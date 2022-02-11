@@ -20,8 +20,8 @@ public class Player {
         items.add(i);
     }
 
-    public void makePurchase(int price, Item i) {
-        this.money -= price;
+    public void makePurchase(Item i) {
+        this.money -= i.getPrice();
         addItem(i);
     }
 

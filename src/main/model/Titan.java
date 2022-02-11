@@ -10,6 +10,10 @@ public class Titan {
         this.state = true;
     }
 
+    public String getName() {
+        return this.name;
+    }
+
     public boolean isDead() {
         return !(this.state);
     }

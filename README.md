@@ -13,4 +13,4 @@
 - As a user, I want to be able to add an item to my inventory.
 - As a user, I want to be able to defeat titans that are attacking my village.
 - As a user, I want to be able to check if I defeated all the titans and saved my village.
-- As a user, I want to be able to start a new round after the end of each round and also be able to view my high score.
+- As a user, I want to be able to give myself a name in the game.

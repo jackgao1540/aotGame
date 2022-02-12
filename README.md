@@ -10,7 +10,7 @@
   - Because I really like AOT and video games. This first phase will simply implement a system for modelling the environment. The graphics and physics of the game have already been deeply brainstormed by me but it is a little too early to implement them fully as of right this first stage.
 
 ## User Stories
-- As a user, I want to be able to add an item to my inventory.
+- As a user, I want to be able to add multiple items to my inventory.
 - As a user, I want to be able to defeat titans that are attacking my village.
 - As a user, I want to be able to check if I defeated all the titans and saved my village.
 - As a user, I want to be able to give myself a name in the game.

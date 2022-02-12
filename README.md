@@ -7,7 +7,7 @@
 - Who will use this app?
   - People who want to have fun playing a cute game based on a famous anime.
 - Why is this project of interest to me?
-  - Because I really like AOT and video games. This first phase will simply implement a system for modelling the environment. The graphics and physics of the game have already been deeply brainstormed by me but it is a little too early to implement them fully as of right this first stage.
+  - Because I really like AOT and video games. This first phase will simply implement a system for modelling the environment. The graphics and physics of the game have already been deeply brainstormed by me but it is a little too early to implement them fully as of right now.
 
 ## User Stories
 - As a user, I want to be able to add multiple items to my inventory.

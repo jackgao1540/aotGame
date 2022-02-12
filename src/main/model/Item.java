@@ -1,9 +1,9 @@
 package model;
 
-//Represents an item for the player to hold, having a name and a price.
+// Represents an item for the player to hold, having a name and a price.
 public class Item {
-    private String name;
-    private int price;
+    private String name;  // item name
+    private int price;    // item price
 
     public Item(String n, int p) {
         this.name = n;

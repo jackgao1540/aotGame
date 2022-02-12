@@ -6,24 +6,26 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
-// AttackOnTitanApp
+// AttackOnTitanApp, runs the UI for the game
 public class AttackOnTitanApp {
-    private Player player;
-    private ArrayList<Item> shopItems;
-    private ArrayList<Titan> titans;
-    private Scanner input;
+    private Player player;              // Is the player object for this instance of the game
+    private ArrayList<Item> shopItems;  // Is the list of items for the game
+    private ArrayList<Titan> titans;    // Is the list of titans
+    private Scanner input;              // Is the scanner used for getting user input
 
-    public static final Integer MAX_CHARS = 26;
-    public static final Integer MIN_CHARS = 2;
-    public static final String quitKey = "q";
-    public static final String shopkey = "s";
-    public static final String deleteTitanKey = "d";
-    public static final String checkTitansKey = "c";
+    public static final Integer MAX_CHARS = 26;     // Maximum length of player name
+    public static final Integer MIN_CHARS = 2;      // Minimum length of player name
+    public static final String quitKey = "q";       // key for exiting
+    public static final String shopkey = "s";       // key for entering shop
+    public static final String deleteTitanKey = "d";// key for defeating a titan
+    public static final String checkTitansKey = "c";// key for checking the current titans
 
+    // EFFECTS: runs the initialization of the UI
     public AttackOnTitanApp() {
         init();
     }
 
+    // EFFECTS: waits for the user to press enter
     public void pressEnter() {
         System.out.println("ENTER to continue...");
         try {
@@ -33,6 +35,8 @@ public class AttackOnTitanApp {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: initializes the player variable and the two lists, and runs the game
     public void init() {
         input = new Scanner(System.in);
         input.useDelimiter("\n");
@@ -52,6 +56,8 @@ public class AttackOnTitanApp {
         runGame();
     }
 
+    // MODIFIES: this
+    // EFFECTS: runs the game and gets input while the user hasn't quit
     public void runGame() {
         boolean isRunning = true;
         String in;
@@ -73,6 +79,7 @@ public class AttackOnTitanApp {
         }
     }
 
+    // EFFECTS: returns true if at least one titan is alive
     public boolean anAliveTitan() {
         for (int i = 0; i < titans.size(); i++) {
             if (!titans.get(i).isDead()) {
@@ -82,6 +89,8 @@ public class AttackOnTitanApp {
         return false;
     }
 
+    // MODIFIES: this
+    // EFFECTS: handles the user input
     public void handleInput(String in) {
         if (in.equals(checkTitansKey)) {
             checkTitans();
@@ -94,6 +103,7 @@ public class AttackOnTitanApp {
         }
     }
 
+    // EFFECTS: prints out the statuses of the titans
     public void checkTitans() {
         System.out.println("Titans: ");
         for (int i = 0; i < titans.size(); i++) {
@@ -107,6 +117,8 @@ public class AttackOnTitanApp {
         pressEnter();
     }
 
+    // MODIFIES: this
+    // EFFECTS: gets user input and deletes a titan from the list
     public void deleteTitan() {
         System.out.println("Please enter the name of the titan you shall defeat.");
         String titanName = input.next();
@@ -126,6 +138,7 @@ public class AttackOnTitanApp {
         pressEnter();
     }
 
+    // EFFECTS: displays the list of items and player money
     public void displayShop() {
         System.out.println("------SHOP------");
         System.out.println("Player Money: $" + getPlayerMoney());
@@ -134,6 +147,8 @@ public class AttackOnTitanApp {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: displays the shop and gets user input to buy items or exit
     public void shop() {
         boolean inShop = true;
         String cmd;
@@ -154,6 +169,8 @@ public class AttackOnTitanApp {
         pressEnter();
     }
 
+    // MODIFIES: this
+    // EFFECTS: gets user input and adds items to their inventory
     public void buyItem() {
         System.out.println("Please enter the name of the item you would buy.");
         String itemName = input.next().toLowerCase();
@@ -177,6 +194,7 @@ public class AttackOnTitanApp {
         pressEnter();
     }
 
+    // EFFECTS: displays the menu and relevant information for the player
     public void showMenu() {
         System.out.println("Player name: " + player.getName() + ", Money: $" + getPlayerMoney());
         showPlayerItems(player.getItems());
@@ -187,6 +205,7 @@ public class AttackOnTitanApp {
         System.out.println("Head home (if titans are still alive the town will die): " + quitKey);
     }
 
+    // EFFECTS: shows list of currently alive titans
     public void showAliveTitans() {
         System.out.print("Currently alive titans: ");
         boolean none = true;
@@ -204,6 +223,7 @@ public class AttackOnTitanApp {
         }
     }
 
+    // EFFECTS: shows the player's inventory
     public void showPlayerItems(ArrayList<Item> a) {
         System.out.print(player.getName() + "'s items: ");
         if (a.isEmpty()) {
@@ -216,11 +236,13 @@ public class AttackOnTitanApp {
         }
     }
 
+    // EFFECTS: returns the player's money as a string to be displayed
     public String getPlayerMoney() {
         return ((Integer)player.getMoney()).toString();
     }
 
-    boolean validName(String s) {
+    // EFFECTS: checks if a given name is valid
+    public boolean validName(String s) {
         if (s.length() >= MAX_CHARS || s.length() <= MIN_CHARS) {
             return false;
         }
@@ -230,6 +252,8 @@ public class AttackOnTitanApp {
         return true;
     }
 
+    // MODIFIES: this
+    // EFFECTS: initializes the shop with a list of items
     public void initShop() {
         shopItems = new ArrayList<>(Arrays.asList(
                 new Item("Rusty Kitchen Knife", 1),
@@ -241,6 +265,8 @@ public class AttackOnTitanApp {
                 new Item("Founding Titan Fluid", 999)));
     }
 
+    // MODIFIES: this
+    // EFFECTS; initializes the list of titans attacking the village
     public void initTitans() {
         titans = new ArrayList<>(Arrays.asList(
                 new Titan("Eren"),

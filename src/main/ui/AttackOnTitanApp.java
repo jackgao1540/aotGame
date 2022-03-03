@@ -13,8 +13,6 @@ public class AttackOnTitanApp {
     private ArrayList<Titan> titans;    // Is the list of titans
     private Scanner input;              // Is the scanner used for getting user input
 
-    public static final Integer MAX_CHARS = 26;     // Maximum length of player name
-    public static final Integer MIN_CHARS = 2;      // Minimum length of player name
     public static final String quitKey = "q";       // key for exiting
     public static final String shopkey = "s";       // key for entering shop
     public static final String deleteTitanKey = "d";// key for defeating a titan
@@ -44,7 +42,7 @@ public class AttackOnTitanApp {
         //get player name
         System.out.println("Please enter your name: ");
         String s = input.next();
-        while (!validName(s)) {
+        while (!player.validName(s)) {
             System.out.println("Please enter a valid name (no spaces, reasonable length)");
             s = input.next();
         }
@@ -141,7 +139,7 @@ public class AttackOnTitanApp {
     // EFFECTS: displays the list of items and player money
     public void displayShop() {
         System.out.println("------SHOP------");
-        System.out.println("Player Money: $" + getPlayerMoney());
+        System.out.println("Player Money: $" + player.getMoneyString());
         for (int i = 0; i < shopItems.size(); i++) {
             System.out.println(shopItems.get(i).getName() + "-> $" + shopItems.get(i).getPrice());
         }
@@ -196,7 +194,7 @@ public class AttackOnTitanApp {
 
     // EFFECTS: displays the menu and relevant information for the player
     public void showMenu() {
-        System.out.println("Player name: " + player.getName() + ", Money: $" + getPlayerMoney());
+        System.out.println("Player name: " + player.getName() + ", Money: $" + player.getMoneyString());
         showPlayerItems(player.getItems());
         showAliveTitans();
         System.out.println("Check titans that are attacking: " + checkTitansKey);
@@ -234,22 +232,6 @@ public class AttackOnTitanApp {
             }
             System.out.println();
         }
-    }
-
-    // EFFECTS: returns the player's money as a string to be displayed
-    public String getPlayerMoney() {
-        return ((Integer)player.getMoney()).toString();
-    }
-
-    // EFFECTS: checks if a given name is valid
-    public boolean validName(String s) {
-        if (s.length() >= MAX_CHARS || s.length() <= MIN_CHARS) {
-            return false;
-        }
-        if (s.contains(" ")) {
-            return false;
-        }
-        return true;
     }
 
     // MODIFIES: this

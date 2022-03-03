@@ -13,4 +13,4 @@
 - As a user, I want to be able to add multiple items to my inventory.
 - As a user, I want to be able to defeat titans that are attacking my village.
 - As a user, I want to be able to check if I defeated all the titans and saved my village.
-- As a user, I want to be able to give myself a name in the game.
+- As a user, I want to be able to earn money every time that I defeat a titan.

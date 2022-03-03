@@ -9,6 +9,8 @@ public class Player {
     private ArrayList<Item> items; // player's inventory
 
     public static final int DEFAULT_MONEY = 100; // default amount of money for player
+    public static final Integer MAX_CHARS = 25;     // Maximum length of player name
+    public static final Integer MIN_CHARS = 3;      // Minimum length of player name
 
     // MODIFIES: this
     // EFFECTS: initializes a player with the given name, default money, and no items.
@@ -41,5 +43,28 @@ public class Player {
 
     public int getMoney() {
         return this.money;
+    }
+
+    // EFFECTS: returns the player's money as a string to be displayed
+    public String getMoneyString() {
+        return ((Integer)this.money).toString();
+    }
+
+    // EFFECTS: checks if a given name is valid
+    public boolean validName(String s) {
+        if (s.length() > MAX_CHARS || s.length() < MIN_CHARS) {
+            return false;
+        }
+        if (s.contains(" ")) {
+            return false;
+        }
+        return true;
+    }
+
+    // REQUIRES: diff >= 0
+    // MODIFIES: this
+    // EFFECTS: adds set amount of money to player's inventory
+    public void addMoney(int diff) {
+        this.money += diff;
     }
 }

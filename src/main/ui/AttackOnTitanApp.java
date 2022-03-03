@@ -230,7 +230,7 @@ public class AttackOnTitanApp {
             System.out.println(" No items in inventory.");
         } else {
             for (int i = 0; i < a.size(); i++) {
-                System.out.print(a.get(i).getName() + " ");
+                System.out.print(a.get(i).getName() + (i == a.size() - 1 ? "" : ", "));
             }
             System.out.println();
         }

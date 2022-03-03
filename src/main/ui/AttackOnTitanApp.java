@@ -73,7 +73,7 @@ public class AttackOnTitanApp {
         if (!anAliveTitan()) {
             System.out.println("Congratulations! You defeated the titans.");
         } else {
-            System.out.println("Oops! You must have misse a few! The town is destroyed...");
+            System.out.println("Oops! You must have missed a few! The town is destroyed...");
         }
     }
 

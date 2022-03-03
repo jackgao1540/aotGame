@@ -13,4 +13,6 @@
 - As a user, I want to be able to add multiple items to my inventory.
 - As a user, I want to be able to defeat titans that are attacking my village.
 - As a user, I want to be able to check if I defeated all the titans and saved my village.
-- As a user, I want to be able to earn money every time that I defeat a titan.
+- As a user, I want to be able to earn money and points/score every time that I defeat a titan.
+- As a user, I want to be able to have the option to load/save my data.
+- As a user, I want to be able to see my top scores/sessions.

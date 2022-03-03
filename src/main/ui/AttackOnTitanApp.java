@@ -38,7 +38,7 @@ public class AttackOnTitanApp {
     public void init() {
         input = new Scanner(System.in);
         input.useDelimiter("\n");
-
+        player = new Player("null");
         //get player name
         System.out.println("Please enter your name: ");
         String s = input.next();
@@ -101,7 +101,7 @@ public class AttackOnTitanApp {
         }
     }
 
-    // EFFECTS: prints out the statuses of the titans
+    // EFFECTS: prints out the statuses of the titans, and reward if alive
     public void checkTitans() {
         System.out.println("Titans: ");
         for (int i = 0; i < titans.size(); i++) {
@@ -109,7 +109,7 @@ public class AttackOnTitanApp {
             if (cur.isDead()) {
                 System.out.println(cur.getName() + " is dead.");
             } else {
-                System.out.println(cur.getName() + " is still rumbling around.");
+                System.out.println(cur.getName() + " is still alive. Bounty of $" + cur.getRewardString() + ".");
             }
         }
         pressEnter();
@@ -128,6 +128,8 @@ public class AttackOnTitanApp {
                 found = true;
                 cur.makeDead();
                 System.out.println(cur.getName() + " was killed in battle...");
+                System.out.println("You earned $" + cur.getRewardString() + "!");
+                player.addMoney(cur.getReward());
             }
         }
         if (!found) {
@@ -251,10 +253,10 @@ public class AttackOnTitanApp {
     // EFFECTS; initializes the list of titans attacking the village
     public void initTitans() {
         titans = new ArrayList<>(Arrays.asList(
-                new Titan("Eren"),
-                new Titan("Mikasa"),
-                new Titan("Armin"),
-                new Titan("Reiner"),
-                new Titan("Jeke")));
+                new Titan("Eren", 500),
+                new Titan("Mikasa", 250),
+                new Titan("Armin", 250),
+                new Titan("Reiner", 100),
+                new Titan("Jeke", 100)));
     }
 }

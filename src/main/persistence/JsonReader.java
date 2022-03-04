@@ -12,16 +12,16 @@ import java.util.stream.Stream;
 
 import org.json.*;
 
-// Represents a reader that reads workroom from JSON data stored in file
+// An object that can read a GameState from a JSON file
 public class JsonReader {
-    private String source;
+    private String source; //source file to be loaded
 
     // EFFECTS: constructs reader to read from source file
     public JsonReader(String source) {
         this.source = source;
     }
 
-    // EFFECTS: reads workroom from file and returns it;
+    // EFFECTS: reads a GameState file and returns the GameState
     // throws IOException if an error occurs reading data from file
     public GameState read() throws IOException {
         String jsonData = readFile(source);
@@ -40,7 +40,7 @@ public class JsonReader {
         return contentBuilder.toString();
     }
 
-    // EFFECTS: parses workroom from JSON object and returns it
+    // EFFECTS: parses GameState from JSON object and returns it
     private GameState parseGameState(JSONObject jsonObject) {
         Player player = parsePlayer(jsonObject);
         ArrayList<Titan> titans = parseTitans(jsonObject);
@@ -48,6 +48,7 @@ public class JsonReader {
         return gs;
     }
 
+    // EFFECTS: parses list of titans from JSON object and returns it
     private ArrayList<Titan> parseTitans(JSONObject jsonObject) {
         ArrayList<Titan> titans = new ArrayList<>();
         JSONArray i = jsonObject.getJSONArray("titans");
@@ -62,6 +63,7 @@ public class JsonReader {
         return titans;
     }
 
+    // EFFECTS: parses player from JSON objet and returns it
     private Player parsePlayer(JSONObject json) {
         JSONObject p = json.getJSONObject("player");
         String name = p.getString("name");
@@ -71,6 +73,7 @@ public class JsonReader {
         return player;
     }
 
+    // EFFECTS: parses list of items from JSON object and returns it
     private ArrayList<Item> parseItems(JSONObject jsonObject) {
         ArrayList<Item> items = new ArrayList<>();
         JSONArray i = jsonObject.getJSONArray("items");

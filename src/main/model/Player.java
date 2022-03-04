@@ -16,6 +16,20 @@ public class Player implements Writable {
     public static final Integer MAX_CHARS = 25;     // Maximum length of player name
     public static final Integer MIN_CHARS = 3;      // Minimum length of player name
 
+    // EFFECTS: initializes a player with the given name, default money, and no items.
+    public Player(String n) {
+        this.name = n;
+        this.money = DEFAULT_MONEY;
+        this.items = new ArrayList<Item>();
+    }
+
+    // EFFECTS: creates a player with everything given
+    public Player(String n, int m, ArrayList<Item> i) {
+        this.name = n;
+        this.money = m;
+        this.items = i;
+    }
+
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
@@ -25,26 +39,13 @@ public class Player implements Writable {
         return json;
     }
 
+    // EFFECTS: converts the player's items to a JSONArray
     private JSONArray itemsToJson() {
         JSONArray json = new JSONArray();
         for (Item i : items) {
             json.put(i.toJson());
         }
         return json;
-    }
-
-    // MODIFIES: this
-    // EFFECTS: initializes a player with the given name, default money, and no items.
-    public Player(String n) {
-        this.name = n;
-        this.money = DEFAULT_MONEY;
-        this.items = new ArrayList<Item>();
-    }
-
-    public Player(String n, int m, ArrayList<Item> i) {
-        this.name = n;
-        this.money = m;
-        this.items = i;
     }
 
     // MODIFIES: this

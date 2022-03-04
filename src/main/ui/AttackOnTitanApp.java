@@ -15,18 +15,18 @@ public class AttackOnTitanApp {
     private Player player;              // Is the player object for this instance of the game
     private ArrayList<Item> shopItems;  // Is the list of items for the game
     private ArrayList<Titan> titans;    // Is the list of titans
-    private GameState gs;
+    private GameState gs;               // Is the GameState (saveable state that represents the game)
     private Scanner input;              // Is the scanner used for getting user input
-    private JsonWriter jsonWriter;
-    private JsonReader jsonReader;
-    private int runState;
+    private JsonWriter jsonWriter;      // Object that can write (save) the gamestate
+    private JsonReader jsonReader;      // Object that can read the gamestate from JSON
+    private int runState;               // The running state of the program, used upon exit
     private static final String quitKey = "q";       // key for exiting
     private static final String shopkey = "s";       // key for entering shop
     private static final String deleteTitanKey = "d";// key for defeating a titan
     private static final String checkTitansKey = "c";// key for checking the current titans
-    private static final String saveKey = "o";
-    private static final String loadKey = "p";
-    private static final String saveQuitKey = "k";
+    private static final String saveKey = "o";       // key for saving
+    private static final String loadKey = "p";       // key for loading gamestate
+    private static final String saveQuitKey = "k";   // key for saving and quitting
 
     // EFFECTS: runs the initialization of the UI
     public AttackOnTitanApp() {
@@ -57,7 +57,7 @@ public class AttackOnTitanApp {
         runGame();
     }
 
-    // EFFECTS: saves the workroom to file
+    // EFFECTS: saves the gamestate to file
     private void saveGameState() {
         try {
             jsonWriter.open();
@@ -70,7 +70,7 @@ public class AttackOnTitanApp {
     }
 
     // MODIFIES: this
-    // EFFECTS: loads workroom from file
+    // EFFECTS: loads gamestate from file
     private void loadGameState() {
         try {
             gs = jsonReader.read();

@@ -6,7 +6,7 @@ import org.json.JSONObject;
 
 import java.io.*;
 
-// Represents a writer that writes JSON representation of workroom to file
+// Object that can write a GameState to a JSON file
 public class JsonWriter {
     private static final int TAB = 4;
     private PrintWriter writer;
@@ -25,7 +25,7 @@ public class JsonWriter {
     }
 
     // MODIFIES: this
-    // EFFECTS: writes JSON representation of workroom to file
+    // EFFECTS: writes JSON representation of GameState to file
     public void write(GameState gs) {
         JSONObject json = gs.toJson();
         saveToFile(json.toString(TAB));

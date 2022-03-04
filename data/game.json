@@ -1,0 +1,59 @@
+{
+    "titans": [
+        {
+            "reward": 500,
+            "name": "Eren",
+            "state": false
+        },
+        {
+            "reward": 250,
+            "name": "Mikasa",
+            "state": true
+        },
+        {
+            "reward": 250,
+            "name": "Armin",
+            "state": false
+        },
+        {
+            "reward": 100,
+            "name": "Reiner",
+            "state": false
+        },
+        {
+            "reward": 100,
+            "name": "Jeke",
+            "state": false
+        }
+    ],
+    "player": {
+        "money": 28,
+        "name": "jack is the best",
+        "items": [
+            {
+                "price": 1,
+                "name": "Rusty Kitchen Knife"
+            },
+            {
+                "price": 1,
+                "name": "Rusty Kitchen Knife"
+            },
+            {
+                "price": 1,
+                "name": "Rusty Kitchen Knife"
+            },
+            {
+                "price": 999,
+                "name": "Founding Titan Fluid"
+            },
+            {
+                "price": 10,
+                "name": "Sword"
+            },
+            {
+                "price": 10,
+                "name": "Sword"
+            }
+        ]
+    }
+}

@@ -1,42 +1,44 @@
 package ui;
 
 import model.*;
+import persistence.*;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
 // AttackOnTitanApp, runs the UI for the game
 public class AttackOnTitanApp {
+    private static final String JSON_STORE = "./data/game.json";
     private Player player;              // Is the player object for this instance of the game
     private ArrayList<Item> shopItems;  // Is the list of items for the game
     private ArrayList<Titan> titans;    // Is the list of titans
+    private GameState gs;
     private Scanner input;              // Is the scanner used for getting user input
-
-    public static final String quitKey = "q";       // key for exiting
-    public static final String shopkey = "s";       // key for entering shop
-    public static final String deleteTitanKey = "d";// key for defeating a titan
-    public static final String checkTitansKey = "c";// key for checking the current titans
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
+    private int runState;
+    private static final String quitKey = "q";       // key for exiting
+    private static final String shopkey = "s";       // key for entering shop
+    private static final String deleteTitanKey = "d";// key for defeating a titan
+    private static final String checkTitansKey = "c";// key for checking the current titans
+    private static final String saveKey = "o";
+    private static final String loadKey = "p";
+    private static final String saveQuitKey = "k";
 
     // EFFECTS: runs the initialization of the UI
     public AttackOnTitanApp() {
         init();
     }
 
-    // EFFECTS: waits for the user to press enter
-    public void pressEnter() {
-        System.out.println("ENTER to continue...");
-        try {
-            System.in.read();
-        } catch (Exception e) {
-            //nothing
-        }
-    }
-
     // MODIFIES: this
-    // EFFECTS: initializes the player variable and the two lists, and runs the game
+    // EFFECTS: initializes the gamestate and runs the game
     public void init() {
         input = new Scanner(System.in);
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
         input.useDelimiter("\n");
         player = new Player("null");
         //get player name
@@ -50,30 +52,61 @@ public class AttackOnTitanApp {
         //initialize key variables
         player = new Player(s);
         initTitans();
+        gs = new GameState(player, titans);
         initShop();
         runGame();
     }
 
+    // EFFECTS: saves the workroom to file
+    private void saveGameState() {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(gs);
+            jsonWriter.close();
+            System.out.println("Saved game to " + JSON_STORE);
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads workroom from file
+    private void loadGameState() {
+        try {
+            gs = jsonReader.read();
+            System.out.println("Loaded save from " + JSON_STORE + ", welcome back, " + gs.getPlayer().getName() + "!");
+            this.player = gs.getPlayer();
+            this.titans = gs.getTitans();
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
+        }
+    }
+
+
     // MODIFIES: this
     // EFFECTS: runs the game and gets input while the user hasn't quit
     public void runGame() {
-        boolean isRunning = true;
+        runState = 1;
         String in;
-        while (isRunning) {
+        while (runState == 1) {
             showMenu();
             in = input.next();
             in = in.toLowerCase();
             if (in.equals(quitKey)) {
-                isRunning = false;
+                runState = -1;
             } else {
                 handleInput(in);
             }
         }
-
-        if (!anAliveTitan()) {
-            System.out.println("Congratulations! You defeated the titans.");
+        if (runState == -1) {
+            if (!anAliveTitan()) {
+                System.out.println("Congratulations! You defeated the titans.");
+            } else {
+                System.out.println("Oops! You must have missed a few! The town is destroyed...");
+            }
         } else {
-            System.out.println("Oops! You must have missed a few! The town is destroyed...");
+            //saved and quitted
+            System.out.println("Thanks for playing, please come back soon!");
         }
     }
 
@@ -96,6 +129,13 @@ public class AttackOnTitanApp {
             deleteTitan();
         } else if (in.equals(shopkey)) {
             shop();
+        } else if (in.equals(saveKey)) {
+            saveGameState();
+        } else if (in.equals(loadKey)) {
+            loadGameState();
+        } else if (in.equals(saveQuitKey)) {
+            saveGameState();
+            runState = 0;
         } else {
             System.out.println("Please enter a valid command.");
         }
@@ -202,6 +242,9 @@ public class AttackOnTitanApp {
         System.out.println("Check titans that are attacking: " + checkTitansKey);
         System.out.println("Defeat a titan: " + deleteTitanKey);
         System.out.println("Check Shop: " + shopkey);
+        System.out.println("Save Game: " + saveKey);
+        System.out.println("Load Game: " + loadKey);
+        System.out.println("Save and quit (without ending your game session): " + saveQuitKey);
         System.out.println("Head home (if titans are still alive the town will die): " + quitKey);
     }
 
@@ -258,5 +301,15 @@ public class AttackOnTitanApp {
                 new Titan("Armin", 250),
                 new Titan("Reiner", 100),
                 new Titan("Jeke", 100)));
+    }
+
+    // EFFECTS: waits for the user to press enter
+    public void pressEnter() {
+        System.out.println("ENTER to continue...");
+        try {
+            System.in.read();
+        } catch (Exception e) {
+            //nothing
+        }
     }
 }

@@ -1,9 +1,13 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import persistence.*;
+import org.json.*;
 
 // Represents a Player having items, money, and a name.
-public class Player {
+public class Player implements Writable {
     private String name;           // player's name
     private int money;             // player's money
     private ArrayList<Item> items; // player's inventory
@@ -12,12 +16,35 @@ public class Player {
     public static final Integer MAX_CHARS = 25;     // Maximum length of player name
     public static final Integer MIN_CHARS = 3;      // Minimum length of player name
 
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", this.name);
+        json.put("money", this.money);
+        json.put("items", itemsToJson());
+        return json;
+    }
+
+    private JSONArray itemsToJson() {
+        JSONArray json = new JSONArray();
+        for (Item i : items) {
+            json.put(i.toJson());
+        }
+        return json;
+    }
+
     // MODIFIES: this
     // EFFECTS: initializes a player with the given name, default money, and no items.
     public Player(String n) {
         this.name = n;
         this.money = DEFAULT_MONEY;
         this.items = new ArrayList<Item>();
+    }
+
+    public Player(String n, int m, ArrayList<Item> i) {
+        this.name = n;
+        this.money = m;
+        this.items = i;
     }
 
     // MODIFIES: this

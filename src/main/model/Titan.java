@@ -1,7 +1,10 @@
 package model;
 
+import org.json.JSONObject;
+import persistence.*;
+
 // Represents a titan having a name and boolean state indicating whether it is alive.
-public class Titan {
+public class Titan implements Writable{
     private String name;   // titan name
     private boolean state; // alive or dead
     private int rewardValue; // monetary reward for defeating this titan
@@ -18,6 +21,21 @@ public class Titan {
         this.name = s;
         this.state = true;
         this.rewardValue = r;
+    }
+
+    public Titan(String s, boolean st, int r) {
+        this.name = s;
+        this.state = st;
+        this.rewardValue = r;
+    }
+
+    @Override
+    public JSONObject toJson() {
+        JSONObject json = new JSONObject();
+        json.put("name", this.name);
+        json.put("state", this.state);
+        json.put("reward", this.rewardValue);
+        return json;
     }
 
     public int getReward() {

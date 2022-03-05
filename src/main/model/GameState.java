@@ -24,12 +24,6 @@ public class GameState implements Writable {
         return this.titans;
     }
 
-    // MODIFIES: this
-    // EFFECTS: adds a titan to the list
-    public void addTitan(Titan t) {
-        this.titans.add(t);
-    }
-
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();

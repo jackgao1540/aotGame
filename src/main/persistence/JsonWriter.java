@@ -6,6 +6,8 @@ import org.json.JSONObject;
 
 import java.io.*;
 
+// DISCLAIMER: MOST OF THE CODE HERE WAS ADAPTED FROM THE PROVIDED REPOSITORY/PROJECT,
+//             JsonSerializationDemo
 // Object that can write a GameState to a JSON file
 public class JsonWriter {
     private static final int TAB = 4;

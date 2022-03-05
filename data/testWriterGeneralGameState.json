@@ -1,0 +1,15 @@
+{
+    "titans": [{
+        "reward": 100,
+        "name": "Eren",
+        "state": true
+    }],
+    "player": {
+        "money": 100,
+        "name": "Jack",
+        "items": [{
+            "price": 1,
+            "name": "bum"
+        }]
+    }
+}

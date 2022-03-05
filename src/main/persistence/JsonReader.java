@@ -12,6 +12,8 @@ import java.util.stream.Stream;
 
 import org.json.*;
 
+// DISCLAIMER: MOST OF THE CODE HERE WAS ADAPTED FROM THE PROVIDED REPOSITORY/PROJECT,
+//             JsonSerializationDemo
 // An object that can read a GameState from a JSON file
 public class JsonReader {
     private String source; //source file to be loaded

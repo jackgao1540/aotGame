@@ -1,0 +1,32 @@
+{
+  "titans": [
+    {
+      "reward": 12345,
+      "name": "Zunesha",
+      "state": true
+    },
+    {
+      "reward": 0,
+      "name": "Optimus",
+      "state": true
+    }
+  ],
+  "player": {
+    "money": 42069,
+    "name": "jjdaboss1540",
+    "items": [
+      {
+        "price": -1,
+        "name": "Enma"
+      },
+      {
+        "price": 3400,
+        "name": "Immortal Shieldbow"
+      },
+      {
+        "price": 0,
+        "name": "Reshiram"
+      }
+    ]
+  }
+}

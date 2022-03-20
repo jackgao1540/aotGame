@@ -1,6 +1,8 @@
 package persistence;
 
-import model.*;
+import model.player.Item;
+import model.player.Player;
+import model.titans.Titan;
 
 import java.util.ArrayList;
 
@@ -24,8 +26,6 @@ public class JsonTest {
         assertEquals(t1.size(), t2.size());
         for (int i = 0; i < Math.min(t1.size(), t2.size()); i++) {
             Titan i1 = t1.get(i), i2 = t2.get(i);
-            assertEquals(i1.getName(), i2.getName());
-            assertEquals(i1.isDead(), i2.isDead());
             assertEquals(i1.getReward(), i2.getReward());
         }
     }

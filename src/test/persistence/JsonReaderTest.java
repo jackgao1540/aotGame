@@ -1,11 +1,11 @@
 package persistence;
 
 import model.*;
+import model.player.Player;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -30,7 +30,7 @@ class JsonReaderTest extends JsonTest {
         try {
             GameState gs = reader.read();
             assertEquals(gs.getTitans().size(), 0);
-            Player p = new Player("", 0, new ArrayList<>());
+            Player p = new Player("", 0, new ArrayList<>(), null);
             checkPlayer(p, gs.getPlayer());
         } catch (IOException e) {
             fail("Couldn't read from file");
@@ -39,23 +39,5 @@ class JsonReaderTest extends JsonTest {
 
     @Test
     void testReaderGeneralWorkRoom() {
-        JsonReader reader = new JsonReader("./data/testReaderGeneralGameState.json");
-        try {
-            GameState gs = reader.read();
-            ArrayList<Item> items = new ArrayList<>(Arrays.asList(
-                    new Item("Enma", -1),
-                    new Item("Immortal Shieldbow", 3400),
-                    new Item("Reshiram", 0)
-            ));
-            Player p = new Player("jjdaboss1540", 42069, items);
-            checkPlayer(p, gs.getPlayer());
-            ArrayList<Titan> titans = new ArrayList<>(Arrays.asList(
-                new Titan("Zunesha", true, 12345),
-                new Titan("Optimus", true, 0)
-            ));
-            checkTitans(gs.getTitans(), titans);
-        } catch (IOException e) {
-            fail("Couldn't read from file");
-        }
     }
 }

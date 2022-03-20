@@ -1,12 +1,11 @@
 package persistence;
 
 import model.*;
+import model.player.Player;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,7 +16,7 @@ class JsonWriterTest extends JsonTest {
     @Test
     void testWriterInvalidFile() {
         try {
-            GameState gs = new GameState(new Player("", 0, new ArrayList<>()), new ArrayList<>());
+            GameState gs = new GameState(new Player("", 0, new ArrayList<>(), null), new ArrayList<>(), new ArrayList<>(), null, null);
             JsonWriter writer = new JsonWriter("./data/my\0illegal:fileName.json");
             writer.open();
             fail("IOException was expected");
@@ -28,41 +27,11 @@ class JsonWriterTest extends JsonTest {
 
     @Test
     void testWriterEmptyGameState() {
-        try {
-            GameState gs = new GameState(new Player("", 0, new ArrayList<>()), new ArrayList<>());
-            JsonWriter writer = new JsonWriter("./data/testWriterEmptyGameState.json");
-            writer.open();
-            writer.write(gs);
-            writer.close();
 
-            JsonReader reader = new JsonReader("./data/testWriterEmptyGameState.json");
-            gs = reader.read();
-            Player p = new Player("", 0, new ArrayList<>());
-            ArrayList<Titan> titans = new ArrayList<>();
-            checkTitans(titans, gs.getTitans());
-            checkPlayer(p, gs.getPlayer());
-        } catch (IOException e) {
-            fail("Exception should not have been thrown");
-        }
     }
 
     @Test
     void testWriterGeneralGameState() {
-        try {
-            Player p = new Player("Jack", 100, new ArrayList<Item>(Arrays.asList(new Item("bum", 1))));
-            ArrayList<Titan> titans = new ArrayList<>(Arrays.asList(new Titan("Eren", true, 100)));
-            GameState gs = new GameState(p, titans);
-            JsonWriter writer = new JsonWriter("./data/testWriterGeneralGameState.json");
-            writer.open();
-            writer.write(gs);
-            writer.close();
 
-            JsonReader reader = new JsonReader("./data/testWriterGeneralGameState.json");
-            gs = reader.read();
-            checkPlayer(gs.getPlayer(), p);
-            checkTitans(titans, gs.getTitans());
-        } catch (IOException e) {
-            fail("Exception should not have been thrown");
-        }
     }
 }

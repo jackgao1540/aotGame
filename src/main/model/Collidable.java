@@ -1,6 +1,8 @@
 package model;
 
-public class Collidable {
+import model.GameState;
+
+public abstract class Collidable {
     protected final int collidableX;
     protected final int collidableY;
     protected int sectorX;

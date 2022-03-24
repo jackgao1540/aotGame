@@ -2,8 +2,6 @@ package model.buildings;
 
 import model.Collidable;
 import model.GameState;
-import org.json.JSONObject;
-import persistence.Writable;
 
 public abstract class Building extends Collidable {
     protected int hitPoints;

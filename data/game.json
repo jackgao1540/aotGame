@@ -1,18 +1,33 @@
 {
-    "Shop": {"hitPoints": -420},
-    "titans": [],
+    "Shop": {"hitPoints": 480},
+    "titans": [
+        {
+            "reward": 1000,
+            "x": 25,
+            "width": 50,
+            "y": 25,
+            "height": 50
+        },
+        {
+            "reward": 750,
+            "x": 75,
+            "width": 50,
+            "y": 25,
+            "height": 50
+        }
+    ],
     "buildings": [
         {
             "rotation": 0,
             "x": 100,
             "y": 200,
-            "hitPoints": -80
+            "hitPoints": 120
         },
         {
             "rotation": 20,
             "x": 50,
             "y": 500,
-            "hitPoints": 20
+            "hitPoints": 120
         },
         {
             "rotation": 300,
@@ -36,7 +51,7 @@
             "rotation": 100,
             "x": 400,
             "y": 800,
-            "hitPoints": -180
+            "hitPoints": 120
         },
         {
             "rotation": 90,
@@ -45,46 +60,12 @@
             "hitPoints": 120
         }
     ],
-    "TownHall": {"hitPoints": -200},
+    "TownHall": {"hitPoints": 600},
     "player": {
-        "money": 98771,
-        "name": "jackgao1540",
-        "x": 4000,
-        "y": 3130,
-        "items": [
-            {
-                "fireDMG": 300,
-                "price": 100,
-                "spd": 0,
-                "dashDMG": 0,
-                "name": "Thunder Spear",
-                "canFire": true,
-                "atk": 50,
-                "projSize": 30,
-                "canDash": false
-            },
-            {
-                "fireDMG": 0,
-                "price": 130,
-                "spd": 200,
-                "dashDMG": 500,
-                "name": "Mikasa's Red Scarf",
-                "canFire": false,
-                "atk": 200,
-                "projSize": 0,
-                "canDash": true
-            },
-            {
-                "fireDMG": 0,
-                "price": 999,
-                "spd": 0,
-                "dashDMG": 0,
-                "name": "Founding Titan Fluid",
-                "canFire": false,
-                "atk": 100000,
-                "projSize": 0,
-                "canDash": false
-            }
-        ]
+        "money": 100000,
+        "name": "jack",
+        "x": 800,
+        "y": 580,
+        "items": []
     }
 }

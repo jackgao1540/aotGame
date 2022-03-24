@@ -1,4 +1,4 @@
-package model.player;
+package model;
 
 import org.json.JSONObject;
 import persistence.*;

@@ -1,9 +1,7 @@
 package model;
 
-import model.player.Item;
-import model.player.Player;
+import model.player.*;
 import org.junit.jupiter.api.Test;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 

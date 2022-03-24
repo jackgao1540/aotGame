@@ -1,14 +1,15 @@
 package ui;
 
 import model.*;
-import model.buildings.Shop;
-import model.buildings.TownHall;
-import model.buildings.TownHouse;
-import model.player.Item;
-import model.player.Player;
-import model.titans.Titan;
+import model.buildings.*;
+import model.Item;
+import model.player.*;
+import model.titans.*;
 import persistence.*;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 // AttackOnTitanApp, runs the UI for the game
-public class AttackOnTitanApp {
+public class AttackOnTitanApp extends JFrame {
     private static final String JSON_STORE = "./data/game.json";
     private Player player;              // Is the player object for this instance of the game
     private ArrayList<Item> shopItems;  // Is the list of items for the game
@@ -38,14 +39,28 @@ public class AttackOnTitanApp {
     private static final String modifyBuildingsKey = "b";
     private static final String saveQuitKey = "k";   // key for saving and quitting
 
+    //panels
+    private GamePanel gamePanel;
+    private MenuPanel menuPanel;
+
     // EFFECTS: runs the initialization of the UI
     public AttackOnTitanApp() {
+        super("Attack On Titan");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setUndecorated(false);
+        menuPanel = new MenuPanel(this);
+        add(menuPanel);
+        pack();
+        setResizable(false);
+        setVisible(true);
         init();
     }
 
-    // MODIFIES: this
-    // EFFECTS: initializes the gamestate and runs the game
     public void init() {
+
+    }
+
+    public void newGameState() {
         input = new Scanner(System.in);
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE);

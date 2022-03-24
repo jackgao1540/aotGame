@@ -1,7 +1,7 @@
 package persistence;
 
 import model.*;
-import model.player.Player;
+import model.player.*;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -24,20 +24,20 @@ class JsonReaderTest extends JsonTest {
         }
     }
 
-    @Test
-    void testReaderEmptyWorkRoom() {
-        JsonReader reader = new JsonReader("./data/testReaderEmptyGameState.json");
-        try {
-            GameState gs = reader.read();
-            assertEquals(gs.getTitans().size(), 0);
-            Player p = new Player("", 0, new ArrayList<>(), null);
-            checkPlayer(p, gs.getPlayer());
-        } catch (IOException e) {
-            fail("Couldn't read from file");
-        }
-    }
-
-    @Test
-    void testReaderGeneralWorkRoom() {
-    }
+//    @Test
+//    void testReaderEmptyWorkRoom() {
+//        JsonReader reader = new JsonReader("./data/testReaderEmptyGameState.json");
+//        try {
+//            GameState gs = reader.read();
+//            assertEquals(gs.getTitans().size(), 0);
+//            Player p = new Player("", 0, new ArrayList<>(), null);
+//            checkPlayer(p, gs.getPlayer());
+//        } catch (IOException e) {
+//            fail("Couldn't read from file");
+//        }
+//    }
+//
+//    @Test
+//    void testReaderGeneralWorkRoom() {
+//    }
 }

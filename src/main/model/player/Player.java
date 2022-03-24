@@ -2,13 +2,14 @@ package model.player;
 
 import java.util.ArrayList;
 
-import model.Collidable;
+import model.Item;
+import model.*;
 import model.GameState;
 import persistence.*;
 import org.json.*;
 
 // Represents a Player having items, money, and a name.
-public class Player extends Collidable implements Writable {
+public class Player extends Movable implements Writable {
     private String name;           // player's name
     private int money;             // player's money
     private ArrayList<Item> items; // player's inventory
@@ -18,13 +19,15 @@ public class Player extends Collidable implements Writable {
     public static final Integer MIN_CHARS = 3;      // Minimum length of player name
     public static final int DEFAULT_X = GameState.WIDTH / 2;
     public static final int DEFAULT_Y = (GameState.HEIGHT / 2) + 130;
+    public static final int DEFAULT_SPEED = 13;
+    public static final double DEFAULT_THETA = 0;
     public static final int WIDTH = 80;
     public static final int HEIGHT = 80;
 
 
     // EFFECTS: initializes a player with the given name, default money, and no items.
     public Player(String n, GameState gs) {
-        super(DEFAULT_X, DEFAULT_Y, WIDTH, HEIGHT, gs);
+        super(DEFAULT_X, DEFAULT_Y, WIDTH, HEIGHT, DEFAULT_SPEED, DEFAULT_THETA, gs);
         this.name = n;
         this.money = DEFAULT_MONEY;
         this.items = new ArrayList<Item>();
@@ -32,14 +35,14 @@ public class Player extends Collidable implements Writable {
 
     // EFFECTS: creates a player with everything given
     public Player(String n, int m, ArrayList<Item> i, GameState gs) {
-        super(DEFAULT_X, DEFAULT_Y, WIDTH, HEIGHT, gs);
+        super(DEFAULT_X, DEFAULT_Y, WIDTH, HEIGHT, DEFAULT_SPEED, DEFAULT_THETA, gs);
         this.name = n;
         this.money = m;
         this.items = i;
     }
 
     public Player(String n, int m, ArrayList<Item> i, int x, int y, GameState gs) {
-        super(x, y, WIDTH, HEIGHT, gs);
+        super(x, y, WIDTH, HEIGHT, DEFAULT_SPEED, DEFAULT_THETA, gs);
         this.name = n;
         this.money = m;
         this.items = i;

@@ -2,18 +2,15 @@ package model;
 
 import java.util.*;
 
-import model.buildings.Building;
-import model.buildings.Shop;
-import model.buildings.TownHall;
-import model.buildings.TownHouse;
-import model.player.Player;
-import model.titans.Titan;
+import model.buildings.*;
+import model.player.*;
+import model.titans.*;
 import org.json.*;
 import persistence.*;
 
 public class GameState implements Writable {
-    public static final int WIDTH = 8000;
-    public static final int HEIGHT = 6000;
+    public static final int WIDTH = 1600;
+    public static final int HEIGHT = 900;
     public static final int SECTOR_ROWS = 10;
     public static final int SECTOR_COLS = 10;
     public static final int SECTOR_WIDTH = WIDTH / SECTOR_ROWS;

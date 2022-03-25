@@ -57,13 +57,36 @@
             "hitPoints": 120
         }
     ],
-    "TownHall": {"hitPoints": 400},
+    "TownHall": {"hitPoints": 0},
     "player": {
-        "money": 100000,
-        "attack": 13,
-        "name": "dasfasd",
-        "x": 0,
-        "y": 899,
-        "items": []
+        "money": 16051,
+        "attack": 100018,
+        "name": "asdfasd",
+        "x": 1293,
+        "y": 571,
+        "items": [
+            {
+                "fireDMG": 0,
+                "price": 50,
+                "spd": 50,
+                "dashDMG": 100,
+                "name": "ODM Gear",
+                "canFire": false,
+                "atk": 5,
+                "projSize": 0,
+                "canDash": true
+            },
+            {
+                "fireDMG": 0,
+                "price": 999,
+                "spd": 0,
+                "dashDMG": 0,
+                "name": "Founding Titan Fluid",
+                "canFire": false,
+                "atk": 100000,
+                "projSize": 0,
+                "canDash": false
+            }
+        ]
     }
 }

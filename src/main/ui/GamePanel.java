@@ -132,6 +132,11 @@ public class GamePanel extends JPanel {
         Rectangle rect2 = new Rectangle(x, y, t.getWidth(), t.getHeight());
         g2d.draw(rect2);
         g2d.fill(rect2);
+        g.setColor(new Color(0, 255, 0));
+        int percent = t.getWidth() * t.getHitPoints() / t.DEFAULT_HP;
+        g.fillRect(x, y + t.getHeight() + 10, percent, 8);
+        g.setColor(new Color(255, 0, 0));
+        g.fillRect(x + percent, y + t.getHeight() + 10, t.getWidth() - percent, 8);
         g.setColor(savedCol);
     }
 

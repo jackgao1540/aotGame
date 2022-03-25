@@ -51,7 +51,9 @@ public class Titan extends Collidable implements Writable {
             }
         } else {
             //move towards town hall
-            double angle = Math.atan(((double)(gs.getTownHall().getY() - getY())) / ((double)(gs.getTownHall().getX() - getX())));
+            double a = ((double)(gs.getTownHall().getY() - getY()));
+            double b = ((double)(gs.getTownHall().getX() - getX()));
+            double angle = Math.atan(a / b);
             updateX((int)(((double)SPEED) * Math.cos(angle)));
             updateY((int)(((double)SPEED) * Math.sin(angle)));
         }

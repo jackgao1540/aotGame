@@ -8,15 +8,15 @@ public class Item implements Writable {
     private String name;  // item name
     private int price;    // item price
 
-    public final int atk;
-    public final int spd;
-    public final boolean canFire;
-    public final int fireDMG;
-    public final int projSize;
-    public final boolean canDash;
-    public final int dashDMG;
+    public final int atk;         // item's attack stat
+    public final int spd;         // speed stat
+    public final boolean canFire; // if the item is fireable
+    public final int fireDMG;     // dmg of projectile
+    public final int projSize;    // projectile size
+    public final boolean canDash; // if the item can dash
+    public final int dashDMG;     // dash dmg
 
-
+    // EFFECTS: creates an item
     public Item(String n, int p, int atk, int spd, boolean cf, int fd, int ps, boolean cd, int dd) {
         this.name = n;
         this.price = p;

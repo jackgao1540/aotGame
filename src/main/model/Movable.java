@@ -1,29 +1,36 @@
 package model;
 
+// Represents a collidable object that also moves
 public abstract class Movable extends Collidable {
-    protected int speed;
-    protected double theta;
-    protected int vx;
-    protected int vy;
+    protected int vx; // x velocity
+    protected int vy; // y velocity
 
-    public static final int DEFAULT_VX = 0;
-    public static final int DEFAULT_VY = 0;
+    public static final int DEFAULT_VX = 0; // default vx
+    public static final int DEFAULT_VY = 0; // default vy
 
-    public Movable(int x, int y, int w, int h, int speed, double theta, GameState gs) {
+    // EFFECTS: creates a movable object with x, y, widht, height, gamestate
+    public Movable(int x, int y, int w, int h, GameState gs) {
         super(x, y, w, h, gs);
-        this.speed = speed;
-        this.theta = theta;
         this.vx = DEFAULT_VX;
         this.vy = DEFAULT_VY;
     }
 
-    public void updateTheta(double theta) {
-        this.theta = theta;
+    // MODIFIES: this
+    // EFFECTS: updates the object's position
+    public void move() {
+        updateX(vx);
+        updateY(vy);
     }
 
-    public void update() {
-        vx += Math.cos(theta) * speed;
-        vy += Math.sin(theta) * speed;
+    // MODIFIES: this
+    // EFFECTS: accelerates/decelerates vx
+    public void updateVx(int delta) {
+        vx += delta;
     }
 
+    // MODIFIES: this
+    // EFFECTS: accelerates/decelerates vy
+    public void updateVy(int delta) {
+        vy += delta;
+    }
 }

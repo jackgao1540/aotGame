@@ -9,82 +9,222 @@ import persistence.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
+import java.awt.event.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Scanner;
+import java.awt.KeyEventDispatcher;
+import java.awt.KeyboardFocusManager;
+import java.awt.event.KeyEvent;
 
 // AttackOnTitanApp, runs the UI for the game
-public class AttackOnTitanApp extends JFrame {
+public class AttackOnTitanApp extends JFrame implements ActionListener {
     private static final String JSON_STORE = "./data/game.json";
     private Player player;              // Is the player object for this instance of the game
     private ArrayList<Item> shopItems;  // Is the list of items for the game
     private ArrayList<Titan> titans;    // Is the list of titans
-    private ArrayList<TownHouse> buildings;
-    private TownHall townHall;
-    private Shop shop;
+    private ArrayList<TownHouse> buildings; // list of buildings
+    private TownHall townHall; // town hall
+    private Shop shop; // shop
     private GameState gs;               // Is the GameState (saveable state that represents the game)
-    private Scanner input;              // Is the scanner used for getting user input
     private JsonWriter jsonWriter;      // Object that can write (save) the gamestate
     private JsonReader jsonReader;      // Object that can read the gamestate from JSON
-    private int runState;               // The running state of the program, used upon exit
-    private static final String quitKey = "q";       // key for exiting
-    private static final String shopkey = "s";       // key for entering shop
-    private static final String deleteTitanKey = "d";// key for defeating a titan
-    private static final String checkTitansKey = "c";// key for checking the current titans
-    private static final String saveKey = "o";       // key for saving
-    private static final String loadKey = "p";       // key for loading gamestate
-    private static final String modifyBuildingsKey = "b";
-    private static final String saveQuitKey = "k";   // key for saving and quitting
+    private int runState;               // 0 for menu, 1 for game (not paused), 2 for paused, 3 for shop screen
+    private static final int FPS = 60;  // frames per second
+    private static final int INTERVAL = 1000 / FPS; // delay between updates
 
     //panels
-    private GamePanel gamePanel;
-    private MenuPanel menuPanel;
+    private boolean started; // if the game has been initialized at least once
+    private ShopWindow shopWindow; // the shop frame
+    private GamePanel gamePanel;   // panel for video game
+    private MenuPanel menuPanel;   // panel for menu
+    private static volatile boolean wPressed = false; // if w is pressed
+    private static volatile boolean aPressed = false; // if a is pressed
+    private static volatile boolean sPressed = false; // if s is pressed
+    private static volatile boolean dPressed = false; // if d is pressed
+    private static volatile boolean escPressed = false; // if esc is pressed
+
+    // EFFECTS: returns if esc is pressed down
+    public static boolean isEscPressed() {
+        synchronized (AttackOnTitanApp.class) {
+            return escPressed;
+        }
+    }
+
+    // EFFECTS: returns if w is pressed down
+    public static boolean isWPressed() {
+        synchronized (AttackOnTitanApp.class) {
+            return wPressed;
+        }
+    }
+
+    // EFFECTS: returns if a is pressed down
+    public static boolean isAPressed() {
+        synchronized (AttackOnTitanApp.class) {
+            return aPressed;
+        }
+    }
+
+    // EFFECTS: returns if s is pressed down
+    public static boolean isSPressed() {
+        synchronized (AttackOnTitanApp.class) {
+            return sPressed;
+        }
+    }
+
+    // EFFECTS: returns if d is pressed down
+    public static boolean isDPressed() {
+        // I am always DPressed
+        synchronized (AttackOnTitanApp.class) {
+            return dPressed;
+        }
+    }
 
     // EFFECTS: runs the initialization of the UI
     public AttackOnTitanApp() {
         super("Attack On Titan");
+        started = false;
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE, this);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setUndecorated(false);
         menuPanel = new MenuPanel(this);
-        add(menuPanel);
+        menuPanel.setVisible(true);
+        newGameState();
+        setGameStates();
+        add(menuPanel, BorderLayout.NORTH);
         pack();
         setResizable(false);
         setVisible(true);
-        init();
+        Dimension screen = Toolkit.getDefaultToolkit().getScreenSize();
+        setLocation((screen.width - getWidth()) / 2, (screen.height - getHeight()) / 2);
+        addTimer();
+        addKeyEventDispatcher();
     }
 
-    public void init() {
-
+    // MODIFIES: this
+    // EFFECTS: adds a listener to keypresses
+    public void addKeyEventDispatcher() {
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
+            @Override
+            public boolean dispatchKeyEvent(KeyEvent ke) {
+                synchronized (AttackOnTitanApp.class) {
+                    switch (ke.getID()) {
+                        case KeyEvent.KEY_PRESSED:
+                            handleKeyPressed(ke, true);
+                            break;
+                        case KeyEvent.KEY_RELEASED:
+                            handleKeyPressed(ke, false);
+                            break;
+                    }
+                    return false;
+                }
+            }
+        });
     }
 
-    public void newGameState() {
-        input = new Scanner(System.in);
-        jsonWriter = new JsonWriter(JSON_STORE);
-        jsonReader = new JsonReader(JSON_STORE);
-        input.useDelimiter("\n");
-        //get player name
-        System.out.println("Please enter your name: ");
-        String s = input.next();
-        while (!Player.validName(s)) {
-            System.out.println("Please enter a valid name (no spaces, reasonable length)");
-            s = input.next();
+    // MODIFIES: this
+    // EFFECTS: handles KeyEvents
+    private void handleKeyPressed(KeyEvent ke, boolean val) {
+        if (ke.getKeyCode() == KeyEvent.VK_W) {
+            wPressed = val;
         }
+        if (ke.getKeyCode() == KeyEvent.VK_A) {
+            aPressed = val;
+        }
+        if (ke.getKeyCode() == KeyEvent.VK_S) {
+            sPressed = val;
+        }
+        if (ke.getKeyCode() == KeyEvent.VK_D) {
+            dPressed = val;
+        }
+        if (ke.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            escPressed = val;
+        }
+    }
 
+    // REQUIRES: gs != null
+    // MODIFIES: this
+    // EFFECTS: runs the game LOL
+    public void runGame() {
+        if (!started) {
+            started = true;
+            gamePanel = new GamePanel(this);
+            add(gamePanel);
+            gamePanel.setVisible(true);
+        } else {
+            gamePanel.setGameState(gs);
+        }
+    }
+
+
+    // EFFECTS: creates a timer that updates each INTERVAL milliseconds
+    private void addTimer() {
+        Timer t = new Timer(INTERVAL, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+                gs.update(isWPressed(), isAPressed(), isSPressed(), isDPressed());
+                gamePanel.repaint();
+            }
+        });
+        t.start();
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent ae) {
+        String action = ae.getActionCommand();
+        if (action.equals("NewGame")) {
+            // make new game
+            newGameState();
+            setGameStates();
+            runGame();
+        } else if (action.equals("LoadGame")) {
+            // load game
+            loadGameState();
+            setGameStates();
+            runGame();
+        } else if (action.equals("SaveQuit")) {
+            saveGameState();
+            System.exit(0);
+        } else if (action.equals("Shop")) {
+            shopWindow = new ShopWindow(gs, shopItems);
+
+        } else {
+            //is QUIT
+            System.exit(0);
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: creates a new game state and runs game
+    public void newGameState() {
+        String name = JOptionPane.showInputDialog(this, "What is your name?", null);
+        //get player name
+        while (!Player.validName(name)) {
+            name = JOptionPane.showInputDialog(this, "Enter a valid name.", null);
+        }
         //initialize key variables
-        player = new Player(s, null);
+        player = new Player(name, null);
         initTitans();
         initBuildings();
         townHall = new TownHall(null);
         shop = new Shop(null);
-        gs = new GameState(player, titans, buildings, townHall, shop);
-        setGameStates();
+        gs = new GameState(player, titans, buildings, townHall, shop, this);
         initShop();
         runGame();
     }
 
+    public TownHall getTownHall() {
+        return townHall;
+    }
+
+    public Shop getShop() {
+        return shop;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: sets the game state
     public void setGameStates() {
         player.setGameState(gs);
         for (Titan t: titans) {
@@ -120,208 +260,28 @@ public class AttackOnTitanApp extends JFrame {
             buildings = gs.getBuildings();
             townHall = gs.getTownHall();
             shop = gs.getShop();
+
+            for (TownHouse t : buildings) {
+                System.out.println("(" + t.getX() + ", " + t.getY() + ", " + t.getRotation() + ")");
+            }
         } catch (IOException e) {
-            System.out.println("Unable to read from file: " + JSON_STORE);
-        }
-    }
-
-
-    // MODIFIES: this
-    // EFFECTS: runs the game and gets input while the user hasn't quit
-    public void runGame() {
-        runState = 1;
-        String in;
-        while (runState == 1) {
-            showMenu();
-            in = input.next();
-            in = in.toLowerCase();
-            if (in.equals(quitKey)) {
-                runState = -1;
-            } else {
-                handleInput(in);
-            }
-        }
-        if (runState == -1) {
-            if (!anAliveTitan()) {
-                System.out.println("Congratulations! You defeated the titans.");
-            } else {
-                System.out.println("Oops! You must have missed a few! The town is destroyed...");
-            }
-        } else {
-            //saved and quitted
-            System.out.println("Thanks for playing, please come back soon!");
-        }
-    }
-
-    // EFFECTS: returns true if at least one titan is alive
-    public boolean anAliveTitan() {
-        return titans.size() > 0;
-    }
-
-    // MODIFIES: this
-    // EFFECTS: handles the user input
-    public void handleInput(String in) {
-        if (in.equals(checkTitansKey)) {
-            checkTitans();
-        } else if (in.equals(deleteTitanKey)) {
-            deleteTitan();
-        } else if (in.equals(shopkey)) {
-            shop();
-        } else if (in.equals(saveKey)) {
-            saveGameState();
-        } else if (in.equals(loadKey)) {
-            loadGameState();
-        } else if (in.equals(saveQuitKey)) {
-            saveGameState();
-            runState = 0;
-        } else if (in.equals(modifyBuildingsKey)) {
-            modifyBuildings();
-        } else {
-            System.out.println("Please enter a valid command.");
-        }
-    }
-
-    public void modifyBuildings() {
-        System.out.println("Enter 0 to modify a townhouse, 1 for townhall, 2 for shop");
-        int inp = input.nextInt();
-        if (inp == 0) {
-            System.out.println("Enter index and amount of hp to subtract.");
-            int index = input.nextInt();
-            int hp = input.nextInt();
-            if (index >= buildings.size()) {
-                System.out.println("Please enter a valid input");
-            } else {
-                buildings.get(index).subtractHP(hp);
-            }
-
-        } else if (inp == 1) {
-            System.out.println("Please enter hp to subtract");
-            int hp = input.nextInt();
-            townHall.subtractHP(hp);
-        } else if (inp == 2) {
-            System.out.println("Please enter hp to subtract");
-            int hp = input.nextInt();
-            shop.subtractHP(hp);
-        } else {
-            System.out.println("Please enter a valid command.");
-        }
-    }
-
-    // EFFECTS: prints out the statuses of the titans, and reward if alive
-    public void checkTitans() {
-        System.out.println("Titans: ");
-        for (int i = 0; i < titans.size(); i++) {
-            Titan cur = titans.get(i);
-            System.out.println("Titan " +  i + " r: " + cur.getRewardString() + " x: " + cur.getX() + " y: " + cur.getY() + " w: " + cur.getWidth() + " h: " + cur.getHeight());
-        }
-        pressEnter();
-    }
-
-    // MODIFIES: this
-    // EFFECTS: gets user input and deletes a titan from the list
-    public void deleteTitan() {
-        System.out.println("Index of titan to remove: ");
-        int titanIndex = input.nextInt();
-        if (titanIndex < titans.size()) {
-            titans.remove(titanIndex);
-        } else {
-            System.out.println("Please enter a valid index");
-        }
-        pressEnter();
-    }
-
-    // EFFECTS: displays the list of items and player money
-    public void displayShop() {
-        System.out.println("------SHOP------");
-        System.out.println("Player Money: $" + player.getMoneyString());
-        for (int i = 0; i < shopItems.size(); i++) {
-            System.out.println(shopItems.get(i).getName() + "-> $" + shopItems.get(i).getPrice());
+            JOptionPane.showMessageDialog(this, "Could not load game.");
         }
     }
 
     // MODIFIES: this
-    // EFFECTS: displays the shop and gets user input to buy items or exit
-    public void shop() {
-        boolean inShop = true;
-        String cmd;
-        while (inShop) {
-            displayShop();
-            System.out.println("Press b to buy an item, e to exit shop.");
-            cmd = input.next();
-            cmd = cmd.toLowerCase();
-            if (cmd.equals("e")) {
-                inShop = false;
-            } else if (cmd.equals("b")) {
-                buyItem();
-            } else {
-                System.out.println("Please enter a valid command.");
-            }
-        }
-        System.out.println("Thanks for visiting the shop!");
-        pressEnter();
-    }
-
-    // MODIFIES: this
-    // EFFECTS: gets user input and adds items to their inventory
-    public void buyItem() {
-        System.out.println("Please enter the name of the item you would buy.");
-        String itemName = input.next().toLowerCase();
-        boolean found = false;
-        for (int i = 0; i < shopItems.size(); i++) {
-            Item cur = shopItems.get(i);
-            if (cur.getName().toLowerCase().equals(itemName)) {
-                found = true;
-                if (cur.getPrice() <= player.getMoney()) {
-                    player.makePurchase(cur);
-                    System.out.println("Purchase successful!");
-                } else {
-                    System.out.println("Insufficient funds.");
-                }
-                break;
-            }
-        }
-        if (!found) {
-            System.out.println("Item not found.");
-        }
-        pressEnter();
-    }
-
-    // EFFECTS: displays the menu and relevant information for the player
-    public void showMenu() {
-        System.out.println("Player name: " + player.getName() + ", Money: $" + player.getMoneyString());
-        showPlayerItems(player.getItems());
-        System.out.println("Number of titans: " + titans.size());
-        System.out.println("Check titans that are attacking: " + checkTitansKey);
-        System.out.println("Defeat a titan: " + deleteTitanKey);
-        System.out.println("Check Shop: " + shopkey);
-        System.out.println("Save Game: " + saveKey);
-        System.out.println("Load Game: " + loadKey);
-        System.out.println("Save and quit (without ending your game session): " + saveQuitKey);
-        System.out.println("Head home (if titans are still alive the town will die): " + quitKey);
-    }
-
-    // EFFECTS: shows the player's inventory
-    public void showPlayerItems(ArrayList<Item> a) {
-        System.out.print(player.getName() + "'s items: ");
-        if (a.isEmpty()) {
-            System.out.println(" No items in inventory.");
-        } else {
-            for (int i = 0; i < a.size(); i++) {
-                System.out.print(a.get(i).getName() + (i == a.size() - 1 ? "" : ", "));
-            }
-            System.out.println();
-        }
-    }
-
+    // EFFECTS: creates initial buildings list
     public void initBuildings() {
         buildings = new ArrayList<TownHouse>(Arrays.asList(
-                new TownHouse(100, 200, 0, null),
-                new TownHouse(50, 500, 20, null),
-                new TownHouse(700, 200, 300, null),
-                new TownHouse(600, 300, 169, null),
-                new TownHouse(600, 600, 196, null),
-                new TownHouse(400, 800, 100, null),
-                new TownHouse(100, 600, 90, null)));
+                new TownHouse(300, 200, 45, null),
+                new TownHouse(800, 250, 0, null),
+                new TownHouse(1300, 200, 135, null),
+                new TownHouse(100, 450, 0, null),
+                new TownHouse(1500, 450, 0, null),
+                new TownHouse(300, 700, 135, null),
+                new TownHouse(650, 800, 90, null),
+                new TownHouse(950, 800, 90, null),
+                new TownHouse(1300, 700, 45, null)));
     }
 
     // MODIFIES: this
@@ -342,18 +302,14 @@ public class AttackOnTitanApp extends JFrame {
     // EFFECTS; initializes the list of titans attacking the village
     public void initTitans() {
         titans = new ArrayList<>(Arrays.asList(
-                new Titan(1000, 25, 25, 50, 50, null),
-                new Titan(750, 75, 25, 50, 50, null)));
+                new Titan(1000, 100, 300, 50, 69, null),
+                new Titan(1000, 100, 600, 50, 69, null),
+                new Titan(1000, 400, 850, 50, 69, null),
+                new Titan(750, 400, 50, 50, 69, null)));
     }
 
-    // EFFECTS: waits for the user to press enter
-    public void pressEnter() {
-        System.out.println("ENTER to continue...");
-        try {
-            System.in.read();
-        } catch (Exception e) {
-            //nothing
-        }
+    public GameState getGameState() {
+        return gs;
     }
 
     // EFFECTS: creates a new instance of AttackOnTitanApp which runs the game

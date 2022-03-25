@@ -1,71 +1,69 @@
 {
     "Shop": {"hitPoints": 480},
-    "titans": [
+    "titans": [],
+    "buildings": [
         {
-            "reward": 1000,
-            "x": 25,
-            "width": 50,
-            "y": 25,
-            "height": 50
+            "rotation": 45,
+            "x": 300,
+            "y": 200,
+            "hitPoints": 120
         },
         {
-            "reward": 750,
-            "x": 75,
-            "width": 50,
-            "y": 25,
-            "height": 50
-        }
-    ],
-    "buildings": [
+            "rotation": 0,
+            "x": 800,
+            "y": 250,
+            "hitPoints": 120
+        },
+        {
+            "rotation": 135,
+            "x": 1300,
+            "y": 200,
+            "hitPoints": 120
+        },
         {
             "rotation": 0,
             "x": 100,
-            "y": 200,
+            "y": 450,
             "hitPoints": 120
         },
         {
-            "rotation": 20,
-            "x": 50,
-            "y": 500,
+            "rotation": 0,
+            "x": 1500,
+            "y": 450,
             "hitPoints": 120
         },
         {
-            "rotation": 300,
-            "x": 700,
-            "y": 200,
+            "rotation": 135,
+            "x": 300,
+            "y": 700,
             "hitPoints": 120
         },
         {
-            "rotation": 169,
-            "x": 600,
-            "y": 300,
-            "hitPoints": 120
-        },
-        {
-            "rotation": 196,
-            "x": 600,
-            "y": 600,
-            "hitPoints": 120
-        },
-        {
-            "rotation": 100,
-            "x": 400,
+            "rotation": 90,
+            "x": 650,
             "y": 800,
             "hitPoints": 120
         },
         {
             "rotation": 90,
-            "x": 100,
-            "y": 600,
+            "x": 950,
+            "y": 800,
+            "hitPoints": 120
+        },
+        {
+            "rotation": 45,
+            "x": 1300,
+            "y": 700,
             "hitPoints": 120
         }
     ],
-    "TownHall": {"hitPoints": 600},
+    "TownHall": {"hitPoints": 400},
     "player": {
         "money": 100000,
-        "name": "jack",
-        "x": 800,
-        "y": 580,
+        "attack": 13,
+        "name": "dasfasd",
+        "x": 0,
+        "y": 899,
         "items": []
     }
 }

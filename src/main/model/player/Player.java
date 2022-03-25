@@ -1,10 +1,12 @@
 package model.player;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 import model.Item;
 import model.*;
 import model.GameState;
+import model.titans.Titan;
 import persistence.*;
 import org.json.*;
 
@@ -13,39 +15,57 @@ public class Player extends Movable implements Writable {
     private String name;           // player's name
     private int money;             // player's money
     private ArrayList<Item> items; // player's inventory
+    private int attack;            // player's attack stat
 
-    public static final int DEFAULT_MONEY = 100000; // default amount of money for player
+    public static final int DEFAULT_MONEY = 100; // default amount of money for player
     public static final Integer MAX_CHARS = 25;     // Maximum length of player name
     public static final Integer MIN_CHARS = 3;      // Minimum length of player name
-    public static final int DEFAULT_X = GameState.WIDTH / 2;
-    public static final int DEFAULT_Y = (GameState.HEIGHT / 2) + 130;
-    public static final int DEFAULT_SPEED = 13;
-    public static final double DEFAULT_THETA = 0;
-    public static final int WIDTH = 80;
-    public static final int HEIGHT = 80;
+    public static final int DEFAULT_X = GameState.WIDTH / 2;  // default x
+    public static final int DEFAULT_Y = (GameState.HEIGHT / 2) + 130; // default y
+    public static final int MAX_SPEED = 20; // maximum speed
+    public static final int DEFAULT_ACCELERATION = 1; // acceleration
+    public static final int DEFAULT_ATTACK = 13; // default attack stat
+    public static final int WIDTH = 17;  // default width
+    public static final int HEIGHT = 23; // default height
+    public static final Color COLOR = new Color(255, 0, 0); // default color
 
 
     // EFFECTS: initializes a player with the given name, default money, and no items.
     public Player(String n, GameState gs) {
-        super(DEFAULT_X, DEFAULT_Y, WIDTH, HEIGHT, DEFAULT_SPEED, DEFAULT_THETA, gs);
+        super(DEFAULT_X, DEFAULT_Y, WIDTH, HEIGHT, gs);
         this.name = n;
+        this.attack = DEFAULT_ATTACK;
         this.money = DEFAULT_MONEY;
         this.items = new ArrayList<Item>();
     }
 
     // EFFECTS: creates a player with everything given
-    public Player(String n, int m, ArrayList<Item> i, GameState gs) {
-        super(DEFAULT_X, DEFAULT_Y, WIDTH, HEIGHT, DEFAULT_SPEED, DEFAULT_THETA, gs);
+    public Player(String n, int m, ArrayList<Item> i, int x, int y, int attack, GameState gs) {
+        super(x, y, WIDTH, HEIGHT, gs);
         this.name = n;
         this.money = m;
         this.items = i;
+        this.attack = attack;
     }
 
-    public Player(String n, int m, ArrayList<Item> i, int x, int y, GameState gs) {
-        super(x, y, WIDTH, HEIGHT, DEFAULT_SPEED, DEFAULT_THETA, gs);
-        this.name = n;
-        this.money = m;
-        this.items = i;
+    // MODIFIES: this, gs.titans
+    // EFFECTS: moves the player and checks for collisions
+    public void update(int down, int right) {
+        move();
+        updateVx(right * DEFAULT_ACCELERATION);
+        updateVy(down * DEFAULT_ACCELERATION);
+        vx = Math.max(-MAX_SPEED, Math.min(vx, MAX_SPEED));
+        vy = Math.max(-MAX_SPEED, Math.min(vy, MAX_SPEED));
+        collidableX = Math.max(0, Math.min(collidableX, GameState.WIDTH - 1));
+        collidableY = Math.max(0, Math.min(collidableY, GameState.HEIGHT - 1));
+        ArrayList<Titan> t = gs.getTitans();
+        for (Titan i : t) {
+            int a = i.getX() - getX();
+            int b = i.getY() - getY();
+            if (Math.sqrt(a * a + b * b) < WIDTH / 2 + i.getWidth() / 2) {
+                i.subtractHP(attack);
+            }
+        }
     }
 
     @Override
@@ -54,6 +74,7 @@ public class Player extends Movable implements Writable {
         json.put("name", this.name);
         json.put("money", this.money);
         json.put("items", itemsToJson());
+        json.put("attack", this.attack);
         json.put("x", this.collidableX);
         json.put("y", this.collidableY);
         return json;
@@ -72,6 +93,12 @@ public class Player extends Movable implements Writable {
     // EFFECTS: adds an item to the player's inventory
     public void addItem(Item i) {
         items.add(i);
+        // add the stats
+        this.attack += i.getAtk();
+    }
+
+    public int getAttack() {
+        return attack;
     }
 
     // MODIFIES: this
@@ -109,7 +136,6 @@ public class Player extends Movable implements Writable {
         return true;
     }
 
-    // REQUIRES: diff >= 0
     // MODIFIES: this
     // EFFECTS: adds set amount of money to player's inventory
     public void addMoney(int diff) {

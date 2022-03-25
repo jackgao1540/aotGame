@@ -1,16 +1,17 @@
 package model;
 
-import model.GameState;
-
+// Represents an object that can be collided with
 public abstract class Collidable {
-    protected final int collidableX;
-    protected final int collidableY;
-    protected int sectorX;
-    protected int sectorY;
-    protected int width;
-    protected int height;
-    protected GameState gs;
 
+    protected int collidableX; // the object's x postiion
+    protected int collidableY; // the object's y postiion
+    protected int sectorX; // the sector row of the object
+    protected int sectorY; // the sector column of the object
+    protected int width;  // width
+    protected int height; // height
+    protected GameState gs; // gamestate
+
+    // EFFECTS: creates a collidable with x, y, widht, height, and gamestate
     public Collidable(int x, int y, int w, int h, GameState gs) {
         this.sectorX = -1;
         this.sectorY = -1;
@@ -21,6 +22,8 @@ public abstract class Collidable {
         this.gs = gs;
     }
 
+    // MODIFIES: this, gs.sectors
+    // EFFECTS: places this object in a sector to help with reducing work calculating collisions
     public void setSector() {
         if (sectorX != -1 && sectorY != -1) {
             gs.getSector(sectorX, sectorY).remove(this);
@@ -30,6 +33,8 @@ public abstract class Collidable {
         gs.getSector(sectorX, sectorY).add(this);
     }
 
+    // MODIFIES: this
+    // EFFECTS: sets the gamestate for this object, then sets the sector
     public void setGameState(GameState gs) {
         this.gs = gs;
         setSector();
@@ -49,6 +54,18 @@ public abstract class Collidable {
 
     public int getSectorY() {
         return this.sectorY;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: changes x
+    public void updateX(int delta) {
+        this.collidableX += delta;
+    }
+
+    // MODIFIES: this
+    // EFFECTS: changes y
+    public void updateY(int delta) {
+        this.collidableY += delta;
     }
 
     public int getWidth() {

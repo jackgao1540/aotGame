@@ -15,7 +15,7 @@ class JsonReaderTest extends JsonTest {
 
     @Test
     void testReaderNonExistentFile() {
-        JsonReader reader = new JsonReader("./data/noSuchFile.json");
+        JsonReader reader = new JsonReader("./data/noSuchFile.json", null);
         try {
             GameState wr = reader.read();
             fail("IOException expected");

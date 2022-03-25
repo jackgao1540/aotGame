@@ -3,14 +3,18 @@ package model.buildings;
 import model.Collidable;
 import model.GameState;
 
+// Represents an abstract building class that is collidable
 public abstract class Building extends Collidable {
-    protected int hitPoints;
+    protected int hitPoints; // hitpoints of building
 
+    // EFFECTS: initializes a building with given x, y, width, height, hp, and gamestate
     public Building(int x, int y, int w, int h, int hp, GameState gs) {
         super(x, y, w, h, gs);
         this.hitPoints = hp;
     }
 
+    // MODIFIES: this
+    // EFFECTS: subtracts from hp
     public void subtractHP(int hp) {
         this.hitPoints -= hp;
     }
@@ -42,6 +46,7 @@ public abstract class Building extends Collidable {
         return this.hitPoints;
     }
 
+    // EFFECTS: returns true if building has no hitpoints left
     public boolean isDestroyed() {
         return this.getHitPoints() <= 0;
     }

@@ -16,16 +16,19 @@ import model.Item;
 import model.player.Player;
 import model.titans.Titan;
 import org.json.*;
+import ui.AttackOnTitanApp;
 
 // DISCLAIMER: MOST OF THE CODE HERE WAS ADAPTED FROM THE PROVIDED REPOSITORY/PROJECT,
 //             JsonSerializationDemo
 // An object that can read a GameState from a JSON file
 public class JsonReader {
     private String source; //source file to be loaded
+    private AttackOnTitanApp attackOnTitanApp;
 
     // EFFECTS: constructs reader to read from source file
-    public JsonReader(String source) {
+    public JsonReader(String source, AttackOnTitanApp aot) {
         this.source = source;
+        attackOnTitanApp =  aot;
     }
 
     // EFFECTS: reads a GameState file and returns the GameState
@@ -54,7 +57,7 @@ public class JsonReader {
         ArrayList<TownHouse> houses = parseHouses(jsonObject);
         TownHall th = parseTownHall(jsonObject);
         Shop s = parseShop(jsonObject);
-        GameState gs = new GameState(player, titans, houses, th, s);
+        GameState gs = new GameState(player, titans, houses, th, s,attackOnTitanApp);
         //set the gamestates
         player.setGameState(gs);
         for (Titan t: titans) {
@@ -106,7 +109,8 @@ public class JsonReader {
             int y = nextTitan.getInt("y");
             int w = nextTitan.getInt("width");
             int h = nextTitan.getInt("height");
-            Titan tighten = new Titan(r, x, y, w, h, null);
+            int hp = nextTitan.getInt("hp");
+            Titan tighten = new Titan(r, x, y, w, h, hp,null);
             titans.add(tighten);
         }
         return titans;
@@ -120,7 +124,8 @@ public class JsonReader {
         ArrayList<Item> items = parseItems(p);
         int x = p.getInt("x");
         int y = p.getInt("y");
-        Player player = new Player(name, money, items, x, y, null);
+        int attack = p.getInt("attack");
+        Player player = new Player(name, money, items, x, y, attack,null);
         return player;
     }
 

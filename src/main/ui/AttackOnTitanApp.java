@@ -1,6 +1,7 @@
 package ui;
 
 import model.*;
+import model.Event;
 import model.buildings.*;
 import model.Item;
 import model.player.*;
@@ -17,6 +18,7 @@ import java.util.Arrays;
 import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
+import java.util.Iterator;
 
 // AttackOnTitanApp, runs the UI for the game
 public class AttackOnTitanApp extends JFrame implements ActionListener {
@@ -84,6 +86,7 @@ public class AttackOnTitanApp extends JFrame implements ActionListener {
     // EFFECTS: runs the initialization of the UI
     public AttackOnTitanApp() {
         super("Attack On Titan");
+        printEventLog();
         started = false;
         jsonWriter = new JsonWriter(JSON_STORE);
         jsonReader = new JsonReader(JSON_STORE, this);
@@ -184,15 +187,11 @@ public class AttackOnTitanApp extends JFrame implements ActionListener {
             loadGameState();
             setGameStates();
             runGame();
-        } else if (action.equals("SaveQuit")) {
-            saveGameState();
-            System.exit(0);
         } else if (action.equals("Shop")) {
             shopWindow = new ShopWindow(gs, shopItems);
 
         } else {
-            //is QUIT
-            System.exit(0);
+            saveGameState();
         }
     }
 
@@ -310,6 +309,19 @@ public class AttackOnTitanApp extends JFrame implements ActionListener {
 
     public GameState getGameState() {
         return gs;
+    }
+
+    public void printEventLog() {
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                for (Iterator<Event> it = EventLog.getInstance().iterator(); it.hasNext(); ) {
+                    Event event = it.next();
+                    System.out.println(event.getDescription());
+                }
+                System.exit(0);
+            }
+        });
     }
 
     // EFFECTS: creates a new instance of AttackOnTitanApp which runs the game

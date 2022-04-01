@@ -11,8 +11,20 @@
 
 ## User Stories
 - As a user, I want to be able to add multiple items to my inventory.
+- As a user, I want to be able to sell items from my inventory.
 - As a user, I want to be able to defeat titans that are attacking my village.
 - As a user, I want to be able to check if I defeated all the titans and saved my village.
 - As a user, I want to be able to earn money and points/score every time that I defeat a titan.
 - As a user, I want to be able to save my session/game.
 - As a user, I want to be able to load my saved games.
+
+## Phase 4: Task 2
+sample event log:
+- Item Founding Titan Fluid purchased for $999
+- Item Mikasa's Red Scarf purchased for $130
+- Item Sword purchased for $10
+- Item ODM Gear purchased for $50
+- Item Sword sold from inventory for $10
+- Item Thunder Spear purchased for $100
+- Item Meat Pie for Sasha purchased for $3
+- Process finished with exit code 0

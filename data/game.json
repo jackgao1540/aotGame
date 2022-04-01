@@ -59,12 +59,34 @@
     ],
     "TownHall": {"hitPoints": 0},
     "player": {
-        "money": 16051,
-        "attack": 100018,
-        "name": "asdfasd",
-        "x": 1293,
-        "y": 571,
+        "money": 25068,
+        "attack": 100268,
+        "name": "asdfsd",
+        "x": 0,
+        "y": 899,
         "items": [
+            {
+                "fireDMG": 0,
+                "price": 999,
+                "spd": 0,
+                "dashDMG": 0,
+                "name": "Founding Titan Fluid",
+                "canFire": false,
+                "atk": 100000,
+                "projSize": 0,
+                "canDash": false
+            },
+            {
+                "fireDMG": 0,
+                "price": 130,
+                "spd": 200,
+                "dashDMG": 500,
+                "name": "Mikasa's Red Scarf",
+                "canFire": false,
+                "atk": 200,
+                "projSize": 0,
+                "canDash": true
+            },
             {
                 "fireDMG": 0,
                 "price": 50,
@@ -77,13 +99,24 @@
                 "canDash": true
             },
             {
-                "fireDMG": 0,
-                "price": 999,
+                "fireDMG": 300,
+                "price": 100,
                 "spd": 0,
                 "dashDMG": 0,
-                "name": "Founding Titan Fluid",
+                "name": "Thunder Spear",
+                "canFire": true,
+                "atk": 50,
+                "projSize": 30,
+                "canDash": false
+            },
+            {
+                "fireDMG": 0,
+                "price": 3,
+                "spd": 0,
+                "dashDMG": 0,
+                "name": "Meat Pie for Sasha",
                 "canFire": false,
-                "atk": 100000,
+                "atk": 0,
                 "projSize": 0,
                 "canDash": false
             }

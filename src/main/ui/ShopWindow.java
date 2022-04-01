@@ -86,6 +86,16 @@ public class ShopWindow extends JFrame {
             this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
         }
         boolean found = false;
+        // Check if player is selling an item
+        for (Item i: gs.getPlayer().getItems()) {
+            if (i.getName().equalsIgnoreCase(s)) {
+                // sell the item
+                textField.setText("Successfully sold item!");
+                gs.getPlayer().sellItem(i);
+                return;
+            }
+        }
+        // Check if player is buying an item
         for (Item i : items) {
             if (s.equalsIgnoreCase(i.getName())) {
                 found = true;
@@ -98,8 +108,6 @@ public class ShopWindow extends JFrame {
                 }
             }
         }
-        if (!found) {
-            textField.setText("Please enter: quit | exit | valid item name.");
-        }
+        textField.setText((!found) ? "Enter a valid item name." : textField.getText());
     }
 }

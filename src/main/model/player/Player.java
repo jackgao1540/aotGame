@@ -3,6 +3,7 @@ package model.player;
 import java.awt.*;
 import java.util.ArrayList;
 
+import model.Event;
 import model.Item;
 import model.*;
 import model.GameState;
@@ -97,6 +98,15 @@ public class Player extends Movable implements Writable {
         this.attack += i.getAtk();
     }
 
+    // MODIFIES: this
+    // EFFECTS: removes an item from the player's inventory
+    public void removeItem(Item i) {
+        items.remove(i);
+        this.attack -= i.getAtk();
+        Event e = new Event("Item " + i.getName() + " sold from inventory for $" + i.getPrice());
+        EventLog.getInstance().logEvent(e);
+    }
+
     public int getAttack() {
         return attack;
     }
@@ -106,6 +116,15 @@ public class Player extends Movable implements Writable {
     public void makePurchase(Item i) {
         this.money -= i.getPrice();
         addItem(i);
+        Event e = new Event("Item " + i.getName() + " purchased for $" + i.getPrice());
+        EventLog.getInstance().logEvent(e);
+    }
+
+    // MODIFIES: this
+    // EFFECTS: adds to the player's money and removes an item
+    public void sellItem(Item i) {
+        this.money += i.getPrice();
+        removeItem(i);
     }
 
     public ArrayList<Item> getItems() {

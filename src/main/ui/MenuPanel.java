@@ -9,12 +9,11 @@ import java.awt.*;
 public class MenuPanel extends JPanel {
     private JButton newGameButton;      // new game button
     private JButton loadGameButton;     // load game button
-    private JButton quitButton;         // quit button
     private JButton shopButton;         // shop button
-    private JButton saveQuitButton;     // save and quit button
+    private JButton saveGameButton;     // save and quit button
     private AttackOnTitanApp attackOnTitanApp; // aotApp
 
-    public static final int SHIFT = 70; // margin/spacing
+    public static final int SHIFT = 110; // margin/spacing
     public static final int WIDTH = 180; // width of buttons
     public static final int HEIGHT = 70; // height of buttons
 
@@ -36,15 +35,12 @@ public class MenuPanel extends JPanel {
         shopButton = new JButton("SHOP");
         shopButton.addActionListener(attackOnTitanApp);
         shopButton.setActionCommand("Shop");
-        saveQuitButton = new JButton("SAVE + QUIT");
-        saveQuitButton.addActionListener(attackOnTitanApp);
-        saveQuitButton.setActionCommand("SaveQuit");
+        saveGameButton = new JButton("SAVE GAME");
+        saveGameButton.addActionListener(attackOnTitanApp);
+        saveGameButton.setActionCommand("SaveGame");
         loadGameButton = new JButton("LOAD GAME");
         loadGameButton.addActionListener(attackOnTitanApp);
         loadGameButton.setActionCommand("LoadGame");
-        quitButton = new JButton("QUIT");
-        quitButton.addActionListener(attackOnTitanApp);
-        quitButton.setActionCommand("Quit");
         addButtons2();
     }
 
@@ -53,20 +49,17 @@ public class MenuPanel extends JPanel {
     private void addButtons2() {
         add(newGameButton);
         add(loadGameButton);
-        add(quitButton);
         add(shopButton);
-        add(saveQuitButton);
+        add(saveGameButton);
         setLayout(null);
-        newGameButton.setBounds(SHIFT, SHIFT, WIDTH, HEIGHT);
-        loadGameButton.setBounds(3 * SHIFT + WIDTH, SHIFT, WIDTH, HEIGHT);
-        quitButton.setBounds(5 * SHIFT + 2 * WIDTH, SHIFT, WIDTH, HEIGHT);
-        shopButton.setBounds(7 * SHIFT + 3 * WIDTH, SHIFT, WIDTH, HEIGHT);
-        saveQuitButton.setBounds(9 * SHIFT + 4 * WIDTH, SHIFT, WIDTH, HEIGHT);
+        newGameButton.setBounds(SHIFT, 70, WIDTH, HEIGHT);
+        loadGameButton.setBounds(3 * SHIFT + WIDTH, 70, WIDTH, HEIGHT);
+        shopButton.setBounds(5 * SHIFT + 2 * WIDTH, 70, WIDTH, HEIGHT);
+        saveGameButton.setBounds(7 * SHIFT + 3 * WIDTH, 70, WIDTH, HEIGHT);
         newGameButton.setVisible(true);
         loadGameButton.setVisible(true);
-        quitButton.setVisible(true);
         shopButton.setVisible(true);
-        saveQuitButton.setVisible(true);
+        saveGameButton.setVisible(true);
     }
 
 }

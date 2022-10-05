@@ -1,4 +1,4 @@
-# Tiny Titan Tantrums
+# Attack on Titan 2D Simulator 
 
 ## A video game based on one of my favourite animes
 

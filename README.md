@@ -18,7 +18,7 @@
 - As a user, I want to be able to save my session/game.
 - As a user, I want to be able to load my saved games.
 
-##Note
+## Note
 - To buy items, type the name of the item in the shop (case insensitive).
 - To sell an item in your inventory, type the name of the item in the textfield.
 - You cannot have more than one copy of a distinct item.
@@ -39,8 +39,7 @@ sample event log:
 
 ## Phase 4: Task 3
 What I would change if I had more time
-- Firstly, it's clear that in the UML class diagram of this program that
-- there are many redundancies within my class design.
+- Firstly, it's clear that in the UML class diagram of this program that there are many redundancies within my class design.
 - If the AttackOnTitanApp already has a GameState, 
 - then it should probably not also need to include a separate
 - version of another Player, ListOfTitans, etc. when 
